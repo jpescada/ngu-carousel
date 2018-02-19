@@ -210,8 +210,13 @@ export class NguCarouselComponent
     this.carouselInner = this.carouselInner1.nativeElement;
     // this.carouselItems = this.carouselInner.getElementsByClassName('item');
 
-    this.rightBtn = this.next.nativeElement;
-    this.leftBtn = this.prev.nativeElement;
+    if (this.next) {
+      this.rightBtn = this.next.nativeElement;
+    }
+
+    if (this.prev) {
+      this.leftBtn = this.prev.nativeElement;
+    }
 
     this.data.type = this.userData.grid.all !== 0 ? 'fixed' : 'responsive';
     this.data.loop = this.userData.loop || false;
@@ -241,12 +246,17 @@ export class NguCarouselComponent
   }
 
   ngAfterContentInit() {
-    this.listener1 = this.renderer.listen(this.leftBtn, 'click', () =>
-      this.carouselScrollOne(0)
-    );
-    this.listener2 = this.renderer.listen(this.rightBtn, 'click', () =>
-      this.carouselScrollOne(1)
-    );
+    if (this.leftBtn) {
+      this.listener1 = this.renderer.listen(this.leftBtn, 'click', () =>
+        this.carouselScrollOne(0)
+      );
+    }
+
+    if (this.rightBtn) {
+      this.listener2 = this.renderer.listen(this.rightBtn, 'click', () =>
+        this.carouselScrollOne(1)
+      );
+    }
 
     this.carouselCssNode = this.createStyleElem();
 
@@ -272,7 +282,7 @@ export class NguCarouselComponent
   }
 
   ngAfterViewInit() {
-    if (this.userData.point.pointStyles) {
+    if (this.userData.point && this.userData.point.pointStyles) {
       const datas = this.userData.point.pointStyles.replace(
         /.ngucarouselPoint/g,
         `.${this.data.token} .ngucarouselPoint`
@@ -294,8 +304,12 @@ export class NguCarouselComponent
     this.carouselSerSub && this.carouselSerSub.unsubscribe();
 
     // remove listeners
-    this.listener1();
-    this.listener2();
+    if (this.listener1) {
+      this.listener1();
+    }
+    if (this.listener2) {
+      this.listener2();
+    }
     if (this.listener3) {
       this.listener3();
     }
@@ -870,19 +884,29 @@ export class NguCarouselComponent
   /* control button for loop */
   private buttonControl(): void {
     if (!this.data.loop || (this.data.isFirst && this.data.isLast)) {
-      this.setStyle(
-        this.leftBtn,
-        'display',
-        this.data.isFirst ? 'none' : 'block'
-      );
-      this.setStyle(
-        this.rightBtn,
-        'display',
-        this.data.isLast ? 'none' : 'block'
-      );
+      if (this.leftBtn) {
+        this.setStyle(
+          this.leftBtn,
+          'display',
+          this.data.isFirst ? 'none' : 'block'
+        );
+      }
+
+      if (this.rightBtn){
+        this.setStyle(
+          this.rightBtn,
+          'display',
+          this.data.isLast ? 'none' : 'block'
+        );
+      }
     } else {
-      this.setStyle(this.leftBtn, 'display', 'block');
-      this.setStyle(this.rightBtn, 'display', 'block');
+      if (this.leftBtn) {
+        this.setStyle(this.leftBtn, 'display', 'block');
+      }
+
+      if (this.rightBtn) {
+        this.setStyle(this.rightBtn, 'display', 'block');
+      }
     }
   }
 
