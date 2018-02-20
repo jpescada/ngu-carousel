@@ -369,7 +369,7 @@ export class NguCarouselComponent
         }
         this.carouselScrollOne(direc);
       });
-      hammertime.on('hammer.input', function(ev) {
+      hammertime.on('hammer.input', function(ev: any) {
         // allow nested touch events to no propagate, this may have other side affects but works for now.
         // TODO: It is probably better to check the source element of the event and only apply the handle to the correct carousel
         ev.srcEvent.stopPropagation();
